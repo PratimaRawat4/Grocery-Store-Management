@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-3loeia5uj80rf=dg#^$s$u(_g7#e%2c3-achyr3_)81uo$g@a!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "grocery-store-management-zjx5.onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
+
 
 
 # Application definition
