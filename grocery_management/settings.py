@@ -128,10 +128,13 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'products', 'static'),  
 ]
 # This is where static files will be collected (for production)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
 
 # Ensure Django serves static files in production (especially on Render)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
