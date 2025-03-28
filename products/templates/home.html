@@ -1,82 +1,107 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grocery Management</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
-<body>
 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Grocery Management System</h1>
+      <h1>Grocery Management System</h1>
 
-        <!-- Add Product Form -->
-        <form action="{% url 'add_product' %}" method="POST" class="add-product-form">
-            {% csrf_token %}
-            <input type="text" name="name" placeholder="Product Name" required>
-            <input type="number" name="price" placeholder="Price ($)" required step="0.01">
-            <input type="number" name="quantity" placeholder="Quantity" required>
-            <input type="date" name="expiry_date">
-            <button type="submit" class="btn add-btn">Add Product</button>
-        </form>
+      <!-- Add Product Form -->
+      <form
+        action="{% url 'add_product' %}"
+        method="POST"
+        class="add-product-form"
+      >
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Product Name" required />
+        <input
+          type="number"
+          name="price"
+          placeholder="Price ($)"
+          required
+          step="0.01"
+        />
+        <input type="number" name="quantity" placeholder="Quantity" required />
+        <input type="date" name="expiry_date" />
+        <button type="submit" class="btn add-btn">Add Product</button>
+      </form>
 
-        <!-- Product List Table -->
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Expiry Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.name }}</td>
-                        <td>${{ product.price }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td>{{ product.expiry_date|default:"None" }}</td>
-                        <td>
-                            <form action="{% url 'sell_product' product.id %}" method="POST">
-                                {% csrf_token %}
-                                <input type="number" name="quantity" min="1" max="{{ product.quantity }}" value="1">
-                                <button type="submit" class="btn sell-btn">Sell</button>
-                            </form>
-                            <a href="{% url 'delete_product' product.id %}" class="btn delete-btn">Delete</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5">No products available.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+      <!-- Product List Table -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Expiry Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>${{ product.price }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>{{ product.expiry_date|default:"None" }}</td>
+              <td>
+                <form
+                  action="{% url 'sell_product' product.id %}"
+                  method="POST"
+                >
+                  {% csrf_token %}
+                  <input
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    max="{{ product.quantity }}"
+                    value="1"
+                  />
+                  <button type="submit" class="btn sell-btn">Sell</button>
+                </form>
+                <a
+                  href="{% url 'delete_product' product.id %}"
+                  class="btn delete-btn"
+                  >Delete</a
+                >
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5">No products available.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Download Invoice Button -->
-        <div class="buttons">
-            <a href="{% url 'generate_invoice' %}" class="btn invoice-btn">Download Invoice</a>
-        </div>
+      <!-- Download Invoice Button -->
+      <div class="buttons">
+        <a href="{% url 'generate_invoice' %}" class="btn invoice-btn"
+          >Download Invoice</a
+        >
+      </div>
     </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
         let rows = document.querySelectorAll("tbody tr");
-        
-        rows.forEach(row => {
-            let quantityCell = row.children[2]; // Assuming Quantity is the 3rd column
-            let quantity = parseInt(quantityCell.innerText.trim(), 10);
-            
-            if (quantity <= 1) {
-                row.classList.add("low-stock");
-            }
-        });
-    });
-</script>
 
-</body>
+        rows.forEach((row) => {
+          let quantityCell = row.children[2]; // Assuming Quantity is the 3rd column
+          let quantity = parseInt(quantityCell.innerText.trim(), 10);
+
+          if (quantity <= 1) {
+            row.classList.add("low-stock");
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
